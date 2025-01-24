@@ -4,6 +4,7 @@ import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import morgan from "morgan"
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 //importing routes 
 import userRoutes from "./routes/userRoutes.js";
@@ -18,8 +19,8 @@ const app = express();
 // middleware
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173", Credentials: true }));
-
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cookieParser());
 
 // console.log("this is ecommerce web".bgGreen);
 

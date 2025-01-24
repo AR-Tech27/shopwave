@@ -15,37 +15,36 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function RegisterPage({ className, ...props }) {
-
   const [inputValues, setinputValues] = useState({});
-
-
 
   // Handle Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/api/v1/users/login", inputValues, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+    axios
+      .post(`${import.meta.env.VITE_BASE_URL}/users/login`, inputValues, {
+        withCredentials:true,  // axios send automatically cookies when we apply this property
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         console.log(response);
-        toast.success(response?.data?.message ,{autoClose:2000});
+        toast.success(response?.data?.message, { autoClose: 2000 });
         setinputValues({});
       })
 
       .catch((error) => {
         console.log(error);
-        toast.error(error?.response?.data?.message ,{autoClose:2000});
+        toast.error(error?.response?.data?.message, { autoClose: 2000 });
         setinputValues({});
-      })
-  }
+      });
+  };
 
   // Handle Change
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setinputValues(values => ({ ...values, [name]: value }));
+    setinputValues((values) => ({ ...values, [name]: value }));
   };
 
   return (
@@ -55,20 +54,20 @@ export default function RegisterPage({ className, ...props }) {
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>
-            Enter your email below to login to your account
+              Enter your email below to login to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-6">
-               
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="Finn@example.com"
-                    required name="email"
+                    required
+                    name="email"
                     value={inputValues.email || ""}
                     onChange={handleChange}
                   />
@@ -77,19 +76,24 @@ export default function RegisterPage({ className, ...props }) {
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
+                      href="#"
+                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                    >
+                      Forgot your password?
+                    </a>
                   </div>
-                  <Input id="password" placeholder="*****" type="password" required name="password"
+                  <Input
+                    id="password"
+                    placeholder="*****"
+                    type="password"
+                    required
+                    name="password"
                     value={inputValues.password || ""}
                     onChange={handleChange}
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                Login
+                  Login
                 </Button>
               </div>
             </form>
@@ -105,7 +109,3 @@ export default function RegisterPage({ className, ...props }) {
     </div>
   );
 }
-
-
-
-
